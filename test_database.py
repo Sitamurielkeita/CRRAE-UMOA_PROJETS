@@ -57,8 +57,8 @@ def test_load_accounts_db(mocker):
     mock_connect = mocker.patch('database_logic.psycopg2.connect')
     # On définit ce que notre curseur simulé doit retourner quand on appelle fetchall()
     fake_data = [
-    (1, 'Alice', 'alice@email.com', 1000),
-    (2, 'Bob', 'bob@email.com', 2000)
+    (1, 'Alice','alice@email.com', 1000),
+    (2, 'Bob','bob@email.com', 2000)
     ]
     mock_cursor = mock_connect().__enter__().cursor().__enter__()
     mock_cursor.fetchall.return_value = fake_data
@@ -66,6 +66,6 @@ def test_load_accounts_db(mocker):
     result = load_accounts_db()
     # 3. Assertions
     # A-t-on exécuté la bonne commande SELECT ?
-    mock_cursor.execute.assert_called_once_with("SELECT id, name,email, balance FROM accounts ORDER BY id")
+    mock_cursor.execute.assert_called_once_with("SELECT id, name, email, balance FROM accounts ORDER BY id")
     # Le résultat de la fonction est-il bien celui que notre DB simulée a envoyé ?
     assert result == fake_data
