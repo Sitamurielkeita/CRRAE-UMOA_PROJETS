@@ -66,6 +66,6 @@ def test_load_accounts_db(mocker):
     result = load_accounts_db()
     # 3. Assertions
     # A-t-on exécuté la bonne commande SELECT ?
-    mock_cursor.execute.assert_called_once_with("SELECT id, name, email, balance FROM accounts ORDER BY id")
+    mock_cursor.execute.assert_called_once_with("SELECT id, name,email, balance FROM accounts ORDER BY id")
     # Le résultat de la fonction est-il bien celui que notre DB simulée a envoyé ?
     assert result == fake_data
