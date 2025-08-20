@@ -57,8 +57,8 @@ def test_load_accounts_db(mocker):
     mock_connect = mocker.patch('database_logic.psycopg2.connect')
     # On définit ce que notre curseur simulé doit retourner quand on appelle fetchall()
     fake_data = [
-    (1, 'Alice','alice@email.com', 1000),
-    (2, 'Bob','bob@email.com', 2000)
+    (1, 'Alice', 'alice@email.com', 1000),
+    (2, 'Bob', 'bob@email.com', 2000)
     ]
     mock_cursor = mock_connect().__enter__().cursor().__enter__()
     mock_cursor.fetchall.return_value = fake_data
