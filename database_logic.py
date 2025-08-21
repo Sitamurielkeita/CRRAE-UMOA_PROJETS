@@ -46,9 +46,12 @@ def update_account_db(account_id, name, email, balance):
     """Met à jour un compte existant."""
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                "UPDATE accounts SET name = %s, email = %s, balance = %s WHERE id = %s",
-                (name, email, balance or 0, account_id)
+            cur.execute( 
+                "UPDATE accounts SET email = %s, balance = %s WHERE id = %s", # Il enlève 'name'
+                (email, balance or 0, account_id)
+               
+          
+
             )
 
 def delete_account_db(account_id):
