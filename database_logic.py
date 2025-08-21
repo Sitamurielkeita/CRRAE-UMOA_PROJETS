@@ -57,3 +57,43 @@ def delete_account_db(account_id):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("DELETE FROM accounts WHERE id = %s", (account_id,))
+
+def get_account_balance(conn, account_id):
+
+"""Récupère le solde d'un compte spécifique."""
+    with conn.cursor() as cur:
+        cur.execute("SELECT balance FROM accounts WHERE id = %s", (account_id,))
+        result = cur.fetchone()
+        if result is None:
+            raise ValueError(f"Le compte avec l'ID {account_id} n'existe pas.")
+            return result[0]
+
+def transfer_funds_db(source_id, destination_id, amount):
+
+    """Transfère un montant d'un compte source vers un compte destinationen utilisant une transaction pour garantir l'intégrité"""
+    if source_id == destination_id:
+        raise ValueError("Le compte source et destination ne peuvent pas être identiques.")
+        if amount <= 0:
+            raise ValueError("Le montant du transfert doit être positif.")
+            conn = get_connection()
+            try:
+                with conn: # Utiliser 'with conn' gère automatiquement commit/rollback
+                with conn.cursor() as cur:
+# 1. Vérifier le solde du compte source (avec verrouillage pour la sécurité)
+                    cur.execute("SELECT balance FROM accounts WHERE id = %s FOR UPDATE", (source_id,) 
+                    source_balance = cur.fetchone()[0]
+                    if source_balance < amount:
+                        raise ValueError("Solde insuffisant pour effectuer le transfert.") 
+# 2. Débiter le compte source
+                        cur.execute("UPDATE accounts SET balance = balance - %s WHERE id = %s",(amount, source_id))
+# 3. Créditer le compte destination
+                        cur.execute("UPDATE accounts SET balance = balance + %s WHERE id = %s",(amount, destination_id))
+
+# Le 'with conn' exécute conn.commit() ici si tout s'est bien passé.
+            except (Exception, psycopg2.Error) as error:
+                print(f"Erreur de transaction, rollback effectué : {error}")
+                raise error
+            finally:
+                if conn:
+                    conn.close()
+
