@@ -1,9 +1,9 @@
-
+# Importation des libraries
 import psycopg2
 import os
 
 # Connexion PostgreSQL
-DATABASE_URL = "A recupérer dans le TP"
+DATABASE_URL = "postgresql://crrae:crrae_umoa@postgresql-34636-0.cloudclusters.net:34636/crrae_umoa?sslmode=require"
 
 def get_connection():
     """Établit la connexion à la base de données."""
@@ -49,6 +49,7 @@ def update_account_db(account_id, name, email, balance):
             cur.execute(
                 "UPDATE accounts SET email = %s, balance = %s WHERE id = %s", # Il enlève 'name'
                 (email, balance or 0, account_id)
+
 
             )
 
