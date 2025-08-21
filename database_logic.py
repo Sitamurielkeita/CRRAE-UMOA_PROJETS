@@ -47,8 +47,9 @@ def update_account_db(account_id, name, email, balance):
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute( 
-                "UPDATE accounts SET balance = %s, name = %s, email = %s WHERE id = %s", # Il change l'ordre
-                (balance or 0, name, email, account_id)
+                "UPDATE accounts SET email = %s, balance = %s WHERE id = %s", # Il enlève 'name'
+                (email, balance or 0, account_id)
+               
           
 
             )
