@@ -1,4 +1,4 @@
-
+# Importation des libraries
 import psycopg2
 import os
 
